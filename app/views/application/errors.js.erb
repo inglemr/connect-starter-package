@@ -1,0 +1,9 @@
+<% if @error == :csrf %>
+  location.reload();
+<% else %>
+  $('#content').html('<%= escape_javascript render(:file=> "/application/errors", :formats => [:html]) %>');
+  <% if !is_app_admin? %>
+    $('#admin_button').remove();
+  <% end %>
+  //history.pushState({}, '', '<%= request.original_url  %>');
+<% end %>

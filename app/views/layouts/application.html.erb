@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <title>Starter Package</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <%= stylesheet_link_tag "application", :media => "all"%>
+    <%= javascript_include_tag "application" %>
+    <%= yield :head %>
+    <%= csrf_meta_tags %>
+
+    <link rel="shortcut icon" href="<%= asset_path 'icon_48.png' %>" type="image/x-icon">
+    <link rel="icon" href="<%= asset_path 'icon_48.png' %>" type="image/x-icon">
+    <link rel="apple-touch-icon" href="<%= asset_path 'icon_48.png' %>">
+  </head>
+  <body>
+    <nav class="navbar navbar-default hidden">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button id='left-nav-toggle' aria-controls="left-nav" aria-expanded="false" class="navbar-toggle left" data-target="#left-nav" data-toggle="collapse" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          <button aria-controls="right-nav" aria-expanded="false" class="navbar-toggle collapsed" data-target="#right-nav" data-toggle="collapse" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          <div class="popover dataBox" id="left-nav">
+            <div class="navigation">
+              <span class="hidden icon-nav-dock2">&nbsp;</span>
+              <span class="icon-nav-expand2"></span>
+            </div>
+            <div class="nav_bottom" style="height: 12px; display: none;"></div>
+          </div>
+        </div>
+
+        <div id="right-nav" aria-expanded="false"  class="navbar-collapse collapse ">
+          <ul class="nav navbar-nav">
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><%#= link_to( , new_user_session_path, :remote => true) %></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="main" role="main">
+      <div id='breadcrumbs'>
+        <%= yield :breadcrumbs %>
+      </div>
+      <% if is_app_admin? %>
+        <div id='admin_button' class="pull-right" style="margin: -25px 18px 0px 0px;">
+          <div class="btn-group dropdown">
+            <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" style="left: -64px;min-width: 120px;">
+              
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <div id="content">
+        <%= yield %>
+      </div>
+    </div>
+
+    <div class="modal fade" id="z_hub_modal" style="display: none;" aria-hidden="true">
+      <%= yield :modal %>
+    </div>
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('body').find(".nav.tab-header a:not('.skip'), #content .nav.nav-tabs a:not('.skip'), .modal-content .nav.tab-header a:not('.skip')").click(function (e) {e.preventDefault(); $(this).tab('show')});
+
+        $('body').find('.dropdown-toggle[data-toggle="hold"]').dropdownHold();
+        <%= yield :scripts %>
+        if ('<%= notice %>' != ""){noty({text: "<%= notice %>", layout: "topRight",type: "success", animateOpen: {opacity: "show"}, closeWith: ["hover"]});}
+        if ('<%= alert %>' != ""){noty({text: "<%= alert %>", layout: "topRight",type: "warning", animateOpen: {opacity: "show"}, closeWith: ["hover"]});}
+        if ('<%= error %>' != ""){noty({text: "<%= error %>", layout: "topRight",type: "error", animateOpen: {opacity: "show"}, closeWith: ["hover"]});}
+      });
+    </script>
+  </body>
+</html>

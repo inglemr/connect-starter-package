@@ -1,0 +1,53 @@
+<% if request.format == :html %>
+  <%  render(:file=>"connector_executions/index", locals: {}, :formats => [:html] ) %>
+<% end %>
+
+<% content_for :modal do %>
+  <div class="modal-dialog" style="width: 800px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Updated Global Settings</h4>
+      </div>
+      <div class="overlay">
+        <i id="loading_form_icon" class="glyphicon glyphicon-refresh glyphicon-spin"></i>
+      </div>
+      <div class="modal-body z-background">
+        <div class="row">
+          <div class="col-md-12">
+            <p id="notice"><%= notice %></p>
+          </div>
+          <div class="col-md-12">
+                       <p>
+              <strong>Days offset:</strong>
+              <%= @appinstance.days_offset %>
+            </p>
+                        <p>
+              <strong>Run type:</strong>
+              <%= @appinstance.run_type %>
+            </p>
+                        <p>
+              <strong>Billing type(s):</strong>
+              <%= @appinstance.billing_types %>
+            </p>
+             <p>
+              <strong>Cash type(s):</strong>
+              <%= @appinstance.cash_types %>
+            </p>
+             <p>
+              <strong>Revenue type(s):</strong>
+              <%= @appinstance.revenue_types %>
+            </p>
+                      </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% content_for :scripts do %>
+  $('#z_hub_modal').modal("show");
+<% end %>

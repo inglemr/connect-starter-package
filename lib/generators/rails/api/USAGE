@@ -1,0 +1,12 @@
+Description:
+    Generates the API controller and the three basic views based on the model name provided
+
+Example:
+    rails generate API {Model}
+
+    This will create:
+	/app/controllers/api/v1/{Name}_controller.rb
+	/app/views/api/v1/{Name}/
+	/app/views/api/v1/{Name}/_{Name}.json.jbuilder
+	/app/views/api/v1/{Name}/index.json.jbuilder
+	/app/views/api/v1/{Name}/show.json.jbuilder

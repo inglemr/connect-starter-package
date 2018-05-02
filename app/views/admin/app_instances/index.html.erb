@@ -1,0 +1,24 @@
+<% content_for :breadcrumbs do %>
+  <ul class="breadcrumb">
+    <li><%= link_to('Home', root_path, :remote => true) %></li>
+    <li>Admin</li>
+    <li class="active">App Instances</li>
+  </ul>
+<% end %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="green-header">
+      <h2>App Instances</h2>
+    </div>
+    <div class='tab-pane active'>
+      <% table_actions = capture do %>
+      <% end %>
+      <%= render_datatable(ZuoraConnect::AppInstance, admin_app_instances_path(format: "json"), :table_actions => table_actions, :table_filters => [], :columns => datatable_columns(ZuoraConnect::AppInstance)) %>
+    </div>
+  </div>
+</div>
+
+<% content_for :scripts do %>
+<% end %>
+

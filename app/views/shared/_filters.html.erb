@@ -1,0 +1,34 @@
+<% placeholder = defined?(table_filter["placeholder"]) ? table_filter["placeholder"] : "" %>
+<% prompt = defined?(table_filter["prompt"]) ? table_filter["prompt"] : "" %>
+<% index = defined?(index) ? index : nil %>
+<% filter_count = defined?(filter_count) ? filter_count : nil %>
+<% width = defined?(table_filter["width"]) ? table_filter["width"] : "100%" %>
+<% allow_clear = table_filter["allow-clear"] ? table_filter["allow-clear"] : true %>
+
+<% if table_filter["type"] == "checkbox" %>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="hold"  aria-haspopup="true" aria-expanded="false">
+      <%= prompt %> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" >
+      <li>
+        <% table_filter["values"].each do |type| %>
+          <div class="checkbox checkbox-success" style='margin-left: 15px;'>
+            <input type="checkbox" name='<%= table_filter["name"].parameterize('_') %>[]' <%= table_filter["selection"].include?(type) ? 'checked' : ''%> value="<%= type %>"><label for="<%= table_filter["name"].parameterize('_') %>"><%= type %></label>
+          </div>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+<% elsif table_filter["type"] == "select" %>
+  <div class="btn-group <%= index > 0 ? 'select2-bootstrap-prepend' : '' %> <%= (index+1 != filter_count && filter_count > 1) ? 'select2-bootstrap-append' : '' %>">
+    <%= select_tag(table_filter["name"].parameterize('_'), options_for_select( table_filter["values"], table_filter["selection"]), options = { :class => 'form-control input-sm', :prompt => prompt, :data =>{:placeholder => placeholder, "allow-clear" => allow_clear }, :style =>''}) %>
+  </div>
+  <% content_for :scripts do %>
+    $('#<%= "#{table_name}_content" %>').find('select[name="<%= table_filter["name"].parameterize('_') %>"]').select2({theme: "bootstrap", containerCssClass: "form-control input-sm", width: '<%= width %>', allowClear: <%= allow_clear %>})
+  <% end %>
+<% elsif table_filter["type"] == "boolean" %>
+  <div class="btn-group" style="margin-left:10px">
+    <input type="checkbox" value="true" name='<%= table_filter["name"].parameterize('_') %>' <%= table_filter["selection"] == "true" ? 'checked' : ''%>><label for="<%= table_filter["name"].parameterize('_') %>"><%= table_filter["name"] %></label>
+  </div>
+<% end %>

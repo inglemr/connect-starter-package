@@ -1,0 +1,577 @@
+/*
+IF YOU SET A Z-INDEX GREATER THAN 1050 UPDATE THE LOGIN MODAL Z-INDEX
+Z-INDEX >200 for left nav
+*/
+
+
+#content{
+  padding: 10px 14px;
+  position: relative;
+  border-bottom: 1px solid #F2F2E8;
+  min-height: 500px;
+}
+
+.content {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: block;
+}
+
+.popover { max-width: 550px;}
+
+blockquote {
+  font-size: 12.5px;
+}
+
+p.help-block{
+  margin-bottom:0px;
+  margin-left: 10px
+}
+
+.border-radiusless{
+  border-radius: 0 !important;
+}
+
+
+input[type=checkbox].form-control {
+  margin: 4px 0 0;
+  height: 21px;
+}
+
+.form-horizontal .has-feedback .input-group .form-control-feedback {
+  top: 0;
+  right: 30px;
+  z-index: 30;
+}
+
+form {
+  &.form-compacted {
+    .form-group {
+      margin-bottom: 5px;
+    }
+  }
+  &.loading {
+    .modal-body {
+      opacity: .15;
+    }
+    i#loading_form_icon {
+      visibility: visible;
+      color: #3c4d55;
+    }
+  }
+
+  i#loading_form_icon {
+    display: inline-block;
+    position: absolute;
+    font-size: 100px;
+    right: 44%;
+    top: 40%;
+    visibility: hidden;
+    z-index: 1000;
+  }
+}
+
+i#loading_form_icon {
+  display:none;
+}
+
+.modal-header {
+  background-color: #384B5D;
+  color: #fff;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+
+#z_hub_modal {
+  div.popover {
+    &.left, &.top {
+      max-width:500px;
+    }
+  }
+}
+
+.green-header {
+  color:#fff;
+
+  font-size:18px;
+  background-color: #6C96A1;
+  border-radius: 2px;
+  margin-left: -15px;
+  margin-right: -15px;
+  padding: 10px;
+  margin-top: -10px;
+  h2 {
+    font-size:19px;
+    color:#fff;
+    letter-spacing:0px;
+    margin:0px;
+  }
+}
+
+.tab-pane{
+  margin-top:10px;
+}
+
+.z-background {
+  background-image: url(asset_path('zuora-logo-faded.svg'));
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 75%;
+}
+
+.img-thumbnail-dark {
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+  padding: 4px;
+  line-height: 1.428571429;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.center{
+  text-align: center
+}
+
+td.center{
+  vertical-align: middle !important;
+  text-align: center
+}
+
+.word-break{
+  word-wrap: break-word;
+}
+
+h1.slim, h2.slim, h3.slim, h4.slim, h5.slim, h6.slim, hr.slim{
+  margin:5px 0px;
+}
+
+.translation_missing{
+  color: red;
+  font-size: 15px;
+}
+
+.input-sm, .input-group-sm > .form-control, .input-group-sm > .input-group-addon, .input-group-sm > .input-group-btn > .btn {
+  height: 30px;
+}
+.form-horizontal .form-control-feedback{
+  top: 0px;
+  right: 15px;
+  width: 34px;
+}
+.form-control-feedback {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 30px;
+  line-height: 34px;
+  text-align: center;
+  pointer-events: none;
+}
+
+body nav {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 13px;
+  line-height: 16px
+}
+/************** Appstore App Show **************/
+#app-logo-icon{
+  background-color: white;
+  height:100px;
+  width:100px;
+}
+
+/***************** Bread Crumb *****************/
+.breadcrumb{
+  box-shadow: 0px 1px 2px #ccc;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 12px;
+}
+
+
+/***************** Navbar  *****************/
+.navbar {
+  border: 0px solid transparent;
+
+  &.navbar-default .navbar-nav > li > a{
+    .caret {
+      font-size: 15px;
+      margin-left: 15px;
+    }
+    &:hover, &:focus {
+      .caret{
+        color: #6ec5ab;
+      }
+    }
+  }
+}
+
+
+/***************** Dropdown Menu Left  *****************/
+
+body nav .navbar-toggle.left {
+  display: block;
+  float: left;
+  margin-top: 6px;
+  width: 40px;
+  height: 32px;
+
+  .icon-bar{
+    width: 20px;
+    margin-top: 4px;
+  }
+
+  .menu-bar-1{
+    position: absolute;
+    top:9px;
+    margin-top:0px !important;
+    margin-right:20px;
+    padding-right:20px;
+  }
+  .menu-bar-2{
+    position: absolute;
+    top:17px;
+    margin-top:0px !important;
+  }
+  .menu-bar-3{
+    position: absolute;
+    top:25px;
+    margin-top:0px !important;
+  }
+}
+
+/***************** Dropdown Menu Extra Styles  *****************/
+.dropdown-menu {
+  min-width: 164px;
+  padding: 6px 0;
+
+  > li > a {
+    padding: 4px 8px 4px 8px;
+    span.fa {
+      margin-right: 10px;
+    }
+    span.glyphicons {
+      padding-left: 0px;
+      margin-right: 4px;
+      &:before {
+        font-size: inherit;
+        position: inherit;
+        color: $dropdown-link-color;
+      }
+    }
+    &:hover{
+      span.glyphicons {
+        &:before {
+          color: $dropdown-link-hover-color;
+        }
+      }
+    }
+  }
+}
+
+/***************** Arrows for right navbar dropdown  *****************/
+@media (min-width: $grid-float-breakpoint-max) {
+  .navbar-right ul.dropdown-menu {
+    &:after, &:before {
+      bottom: 100%;
+      left: 89%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+    &:after {
+      border-color: rgba(136, 183, 213, 0);
+      border-bottom-color: $dropdown-bg;
+      border-width: 8px;
+      margin-left: -8px;
+    }
+    &:before {
+      border-color: rgba(194, 225, 245, 0);
+      border-bottom-color: $dropdown-border;
+      border-width: 9px;
+      margin-left: -9px;
+    }
+  }
+  .navbar-right {
+    line-height: 22px;
+
+    ul{
+      list-style:none;
+      list-style-type:none;
+
+      &.zuora-settings-arrow{
+        &:after, &:before {
+          left: 95%;
+        }
+      }
+    }
+  }
+}
+
+#right-nav{
+  padding-right:10px;
+}
+.settings-top{
+  a{
+    margin-top:2px;
+    padding-top:15px;
+  }
+}
+
+
+#settings-li{
+  .zuora-settings-caret{
+    margin-right:5px;
+    margin-left:15px;
+  }
+
+  &:hover{
+    .zuora-settings-caret{
+      color: #6ec5ab;
+    }
+  }
+
+  .divider{
+    margin: 5px 0;
+  }
+
+  a {
+    padding: 15px 0px 15px 0px;
+  }
+
+  ul{
+    .dropdown-toggle{
+      color: #6ec5ab;
+    }
+
+    .collapsed{
+      color: #787878;
+    }
+
+    a{
+      padding: 4px 8px 4px 8px;
+      font-family: "Intel Clear", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      line-height: 18px;
+      color: #787878;
+      word-spacing:0px;
+      font-stretch: normal;
+
+      .zuora-span{
+        margin-left:-12px;
+      }
+    }
+  }
+}
+
+.zuora-settings-arrow{
+   margin-top:1px;
+  }
+
+
+/***************** Left Nav *****************/
+.dataBox {
+  top: 50px;
+  border-radius: 0px;
+  width: 202px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: 1px solid #F2F2E8;
+  border-bottom: none;
+  border-left: none;
+  padding-right: 0px;
+  font-size: 15px;
+  z-index: 200;
+  border-right-color: rgb(219, 219, 219);
+  border-right-style: solid;
+  border-right-width: 1px;
+
+
+  > div.navigation {
+    text-align: right;
+    padding: 5px 10px;
+    background: #f1f1f1;
+    height: 32px;
+
+    > span {
+      cursor: pointer;
+
+      &.icon-nav-collase2, &.icon-nav-dock2{
+        color: #6ec5ab;
+        font-weight: bold;
+      }
+    }
+  }
+  ul {
+    padding-left:0;
+    margin:0;
+    list-style: none;
+
+    &.zuora-menu {
+      font-family: "Intel Clear", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      line-height: 22.5px;
+
+      > li.dropdown li {
+        padding-left: 43px;
+      }
+
+      a{
+        font-size:14px !important;
+        line-height:20px;
+      }
+      .collapse{
+        li:last-child {
+          padding-bottom: 4px !important;
+        }
+      }
+    }
+
+    a {
+      font-size: 14px;
+      display: block;
+      padding: 5px 0px;
+
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+
+      i {
+        float: right;
+        font-size: 15px;
+        margin-right: 9px;
+        margin-top: 0px;
+        line-height: 1.5;
+        color: inherit;
+      }
+      span.fa {
+        width: 15px;
+        text-align: center;
+      }
+    }
+    > li.dropdown {
+      ul.tools a, ul a{
+        font-size: 12px;
+        line-height: 20px;
+      }
+      > a {
+        color: #ffffff;
+        background-color: #6b7882;
+        padding: 5px 0 5px 13px;
+        line-height: 26px;
+
+        &.collapsed {
+          color:#384b5d;
+          background-color: #ffffff;
+        }
+      }
+      > div.collapse {
+        background-color:#f2f4f8;
+      }
+
+      /* Sub menu overides */
+      li {
+        padding-left: 29px;
+
+        a {
+          background-color: inherit !important;
+          color:#384b5d;
+          padding-top: 6px;
+          padding-bottom: 6px;
+
+          &.active, &:hover, &:focus {
+            color: #3399cc;
+          }
+        }
+      }
+    }
+  }
+}
+
+#zuora-menu-active{
+  a{
+    color: #3399cc !important;
+  }
+}
+
+/****************** Icon ******************/
+
+.zuora-menu-icon{
+  margin-right:5px;
+  margin-left:0px !important;
+}
+
+
+/***************** Footer  *****************/
+.footer{
+  > ul {
+    text-align: center;
+    padding: 10px 0px;
+    >li {
+      display: inline;
+      padding: 0px 10px;
+      color: #666;
+    }
+  }
+  > div {
+    text-align: center;
+    color: rgb(102, 102, 102);
+    margin-bottom: 12px;
+  }
+}
+/*************** Panel ********************/
+ .panel-heading{
+    color: #384A5C !important;
+  }
+
+  .panel{
+    color: #8CADB6 !important;
+  }
+
+  .panel-body{
+    color: black;
+  }
+
+.radio-no-gutter, .checkbox-no-gutter {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.grid_view{
+  padding-right:0px;
+}
+
+td.actions.center {width: 5px;}
+
+.context-menu-item {
+  padding: .4em 2.3em;
+}
+.context-menu-icon.context-menu-icon--fa::before {
+  color: #384B5D;
+}
+li.context-menu-icon {
+  background-size: 17px 17px;
+  background-repeat: no-repeat;
+  margin-left: 6px;
+  background-position-x: 5px;
+  background-position-y: 4px;
+
+  &.context-menu-hover {
+    color: #fff;
+    cursor: pointer;
+    background-color: #6ec5ab;
+  }
+}
+
+div#organizations_datatable_content .grid_view{
+  margin-top:15px !important;
+  padding-right:15px !important;
+}

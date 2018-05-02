@@ -1,0 +1,102 @@
+/* Content Tabs */
+
+div.green-header + ul.tab-header{
+  margin-right: 9px;
+  margin-top: -35px;
+  float: right;
+  padding: 0;
+}
+
+
+div.green-header + ul.tab-header li a {
+  background: #384B5D;
+  text-shadow: none;
+  color: #fff;
+  float: left;
+  font: bold 12px/35px 'Lucida sans', Arial, Helvetica;
+  height: 35px;
+  padding: 0 30px;
+  text-decoration: none;
+  border: none;
+}
+
+div.green-header + ul.tab-header li {
+  margin: 0px 1px 0px 0px;
+  float: left;
+}
+
+div.green-header + ul.tab-header li.active a {
+  background: #fff;
+  color: #333;
+}
+
+div.green-header + ul.tab-header li:not(.active) a:hover {
+  background: #f1f1f1;
+  color:#333;
+}
+/* -------------------------- */
+
+
+
+/* Modal Tabs */
+
+.modal-content ul.tab-header + .modal-body .tab-pane {
+  margin:0px;
+}
+
+.modal-content ul.tab-header {
+  margin-right: 60px;
+  margin-top: -35px;
+  float: right;
+  padding: 0;
+}
+
+.modal-content ul.tab-header li a {
+  background: #f1f1f1;
+  text-shadow: none;
+  color: #384B5D;
+  float: left;
+  font: bold 12px/35px 'Lucida sans', Arial, Helvetica;
+  height: 35px;
+  padding: 0 30px;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.modal-content  ul.tab-header li {
+  margin: 0px 1px 0px 0px;
+  float: left;
+}
+
+.modal-content ul.tab-header li.active a {
+  background: #384B5D !important;
+  color: #fff !important;
+}
+
+.modal-content  ul.tab-header li:not(.active) a:hover {
+  background: #f1f1f1;
+  color:#333;
+}
+
+/* -------------------------- */
+
+
+.modal-header {
+  background-color: transparent !important;
+  color: #384B5D !important;
+}
+.modal-header {
+  border-bottom: 1px solid #f1f1f1 !important;
+}
+.modal-header .close {
+    margin-top: 5px !important;
+}
+
+
+.modal-content ul.tab-header li:not(.active) a:hover {
+  background: #eaebef !important;
+  color: #384B5D !important;
+}
+
+

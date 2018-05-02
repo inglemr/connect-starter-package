@@ -1,0 +1,374 @@
+<% columns = columns.map{ |column| column.symbolize_keys! } %>
+<% if !cookies["#{table_name}_table"].blank? %>
+  <% json = JSON.parse(cookies["#{table_name}_table"]) %>
+  <% if !json['columns'].blank? %>
+    <% columns.each_with_index  do |column, key| %>
+      <% column[:visible] = json['columns'].include?(column[:data].to_s) ? true : false %>
+    <% end %>
+  <% end %>
+  <% if !json['view'].blank? %>
+    <% default_view = json['view'] %>
+  <% end %>
+  <% sort = json['sort'].blank? ? sort : json['sort'] %>
+  <% initial_size = json['table_size'].blank? ? initial_size : json['table_size'] %>
+  <% ordering = json['ordering'].blank? ? [] : json['ordering'] %>
+<% end %>
+
+<% if !ordering.blank? %>
+  <% columns = columns.sort_by{ |v| ordering.index(v[:data]).blank? ? 9999 : ordering.index(v[:data])} %>
+<% end %>
+<% mapping = columns.each_with_index.map {|v,i| [v[:data],i]}.to_h %>
+<% sort = sort.map{|col,dir| [mapping[col].blank? ? 1 : mapping[col] ,dir]}  %>
+<% debug = !defined?(debug) ? false : debug %>
+
+<div id='<%= "#{table_name}_content" %>'>
+  <div class='row'>
+    <div class="col-lg-5 col-md-6 col-sm-5 col-xs-5" >
+      <div class="btn-group">
+      <% if defined?(table_filters)  %>
+        <% table_filters.each_with_index do |table_filter, index| %>
+          <% table_filter["selection"] = return_cookie_filters(cookie_key: "#{table_name}_table", filter_key: "#{table_filter["name"].parameterize('_')}_filter", values: table_filter["values"], type: table_filter["type"], defaults: table_filter["defaults"]) %>
+          <%= render(:partial=>"shared/filters.html.erb", locals: {:table_filter => table_filter, :index => index, :filter_count => table_filters.size, :table_name => table_name}, :formats => [:html])  %>
+        <% end %>
+      <% end %>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-5 col-xs-3" style='padding: 0px;' >
+      <div class="btn-group pull-right" style="display:inline;margin-right: 5px;">
+        <%  if defined?(table_actions) && !table_actions.blank? %>
+          <%=  table_actions  %>
+        <% end %>
+        <div class="btn-group">
+          <button type="button" class="btn hidden btn-default dropdown-toggle group_actions" data-toggle="hold"  aria-haspopup="true" aria-expanded="false"><i class='fa fa-gears'></i></button>
+          <ul class="dropdown-menu" >
+            <li style="white-space: nowrap;"><div class="col-sm-12">Export</div></li>
+          </ul>
+        </div>
+
+        <div class="btn-group">
+          <button id='<%= "#{table_name}_visiblity" %>' type="button" class="btn btn-default dropdown-toggle" data-toggle="hold"  aria-haspopup="true" aria-expanded="false"><i class='fa fa-eye'></i></button>
+          <ul class="dropdown-menu table_visiblity" >
+            <% columns.each_with_index  do |column, key| %>
+              <li>
+                <table>
+                  <tr>
+                    <td>
+                      <div class='checkbox checkbox-success'>
+                        <input type="checkbox" data-key="<%= column[:data] %>" name="<%= table_name %>[table_column_vis][]" <%= column[:visible] == false ?  '' : 'checked' %> value="<%= key %>">
+                        <label><%= ['actions'].include?(column[:data]) ? 'Actions' : column[:title] %></label>
+                      </div>
+                    </td>
+                    <td class='icon'><div class="pull-right"><i class="fa fa-arrows-v"></i></div></td>
+                  </tr>
+                </table>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <% default_view ||= table_views.select {|k,v| v == true }.first[0].to_s %>
+        <% table_view = table_views[:table] %>
+        <% grid_view = table_views[:grid] %>
+
+        <div class="btn-group" data-toggle="buttons" >
+          <label id='<%= "#{table_name}_view_table" %>'class="btn btn-default <%= default_view == 'table' ? 'active' : '' %> <%= !table_view ? 'hidden' : '' %>">
+            <input type="radio" name="<%= table_name %>[view_mode]" <%= default_view == 'table' ? 'checked' : '' %> value='table' />
+            <span class="fa fa-table"></span>
+          </label>
+          <label id='<%= "#{table_name}_view_grid" %>'class="btn btn-default <%= default_view == 'grid' ? 'active' : '' %> <%= !grid_view ? 'hidden' : '' %>" >
+            <input type="radio" name="<%= table_name %>[view_mode]" <%= default_view == 'grid' ? 'checked' : '' %> value='grid' />
+            <span class="fa fa-th-large"></span>
+          </label>
+          <label id='<%= "#{table_name}_refresh" %>' class="btn btn-default table_refresh">
+            <i class="fa fa-refresh"></i>
+          </label>
+        </div>
+        <%= select_tag(:table_size, options_for_select([['10','10'],['25','25'],['50','50'],['100','100']], initial_size.to_s ),  options = { :class => "btn btn-default", :style => '-webkit-appearance: none;-moz-appearance: none;'})%>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-2 col-sm-2">
+        <input id='<%= "#{table_name}_search" %>' type="search" name='table[search]' class="form-control" placeholder='Search.....'>
+    </div>
+  </div>
+
+  <table id='<%= "#{table_name}" %>' data-source="<%= table_url %>" class="table table-striped table-bordered bootstrap-datatable datatable hidden" style="width: 100% !important;"></table>
+</div>
+
+<% content_for :scripts do %>
+  columns = <%= raw(columns.to_json) %>;
+  $.each(columns, function(key, column) {
+    $.each(column, function(key, value) {
+      if(key=='render'){columns[0][key] = new Function('data', 'type', 'row', value);};
+    });
+  });
+
+  var <%= table_name %> = $('#<%= "#{table_name}_content" %>').find('table.datatable').dataTable({
+    "sDom": "t<'row'<'grid_view col-lg-12'>><'row'<'col-md-3'i><'col-lg-4'p>>",
+    "pagingType": "full_numbers",
+    "bProcessing": true,
+    "bServerSide": true,
+    "colReorder": true,
+    "select": false, //{ style: 'multi'},
+    "columns": [].concat(columns),
+    "aaSorting": <%= raw(sort.to_json) %>,
+    "sAjaxSource":  $('#<%= "#{table_name}_content" %>').find('table.datatable').data('source'),
+    "iDisplayLength": <%= initial_size %> ,
+    "fnServerParams": function ( aoData ) {
+      aoData.push(
+        { "name": "table_view_mode", "value": $('#<%= "#{table_name}_content" %>').find('input[type=radio][name="<%= table_name %>[view_mode]"]:checked').val()},
+        { "name": "sSearch",    "value": $('#<%= "#{table_name}_content" %>').find('input[name="table[search]"]').val()}
+      );
+      <% if !aoData.blank? %>
+        <% aoData.each do |data| %>
+          aoData.push(<%= raw(data.to_json) %>);
+        <% end %>
+      <% end %>
+      <% if defined?(table_filters)  %>
+        <% table_filters.each do |table_filter| %>
+          <% if table_filter["type"] == "checkbox" %>
+            aoData.push({ "name": "<%= table_filter["name"].parameterize('_') %>", "value": $('#<%= "#{table_name}_content" %>').find('input[name="<%= table_filter["name"].parameterize('_') %>[]"]:checked').map(function(_, el) { return $(el).val()}).get() });
+          <% elsif table_filter["type"] == "boolean" %>
+            aoData.push({ "name": "<%= table_filter["name"].parameterize('_') %>", "value": $('#<%= "#{table_name}_content" %>').find('input[name="<%= table_filter["name"].parameterize('_') %>"]:checked').val() });
+          <% elsif table_filter["type"] == "select" %>
+            aoData.push({ "name": "<%= table_filter["name"].parameterize('_') %>", "value": $('#<%= "#{table_name}_content" %>').find('select[name="<%= table_filter["name"].parameterize('_') %>"]').val() });
+          <% end %>
+        <% end %>
+      <% end %>
+    },
+    "fnDrawCallback": function( oSettings ) {
+      $('#<%= "#{table_name}_content" %>').find('.table [rel="status_popover"], .table[data-rel="status_popover"]').popover({ placement: "left", html: 'true', container: '.table'});
+      $('#<%= "#{table_name}_content" %>').find('.table [data-toggle="tooltip"]').tooltip();
+      view_mode = $('#<%= "#{table_name}_content" %>').find('input[type=radio][name="<%= table_name %>[view_mode]"]:checked').val();
+
+      $('#<%= "#{table_name}_content" %>').find('.grid_view').addClass('hidden');
+      $('#<%= "#{table_name}_content" %>').find('table.datatable').addClass("hidden");
+
+      if(view_mode == 'grid'){
+        $('#<%= "#{table_name}_content .grid_view" %>').html('');
+
+        $.each(oSettings.aoData, function(index, result) {
+          $('#<%= "#{table_name}_content .grid_view" %>').append(result._aData.grid_view);
+        });
+        if (oSettings.aoData.length == 0) {
+          $(".login_grid").append("<div class='row'><div class='col-md-12 center'><h3>" + oSettings.oLanguage.sEmptyTable + "</h3></div></div>")
+        }
+        $('#<%= "#{table_name}_content" %>').find('.grid_view').removeClass('hidden')
+      }else if(view_mode == 'table'){
+        $('#<%= "#{table_name}_content" %>').find('table.datatable').removeClass("hidden");
+      }
+
+      <%= table_name %>.find('input[type="checkbox"].select_row').on('click', function(e){
+        if($('#<%= "#{table_name}_select_all" %>').is(':checked')){ $('#<%= "#{table_name}_select_all" %>').prop("checked", false);}
+      });
+      if( <%= table_name %>.find('tr[processing="true"]').length > 0 && <%= table_name %>.is(":visible")){
+        setTimeout(function(){
+          <%= table_name %>.api().draw(false);
+        }, 1000);
+      }
+      if(<%= table_name %>.find('tr[processing="true"]').length > 0 && $('#<%= table_name %>_wrapper .grid_view').is(":visible")){
+        setTimeout(function(){
+          <%= table_name %>.api().draw(false);
+        }, 1000);
+      }
+    },
+    "fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
+      data = aoData;
+      if ( data && $.isArray(data) ) {
+        var tmp = {};var rbracket = /(.*?)\[\]$/;
+        $.each( data, function (key, val) {
+          var match = val.name.match(rbracket);
+          if ( match ) {var name = match[0];if ( ! tmp[ name ] ) {tmp[ name ] = [];}tmp[ name ].push( val.value );}else {tmp[val.name] = val.value;}
+        });
+        data = tmp;
+      }
+      <% if debug %>console.log(fnCallback); console.log(oSettings);console.log(data);<% end %>
+      oSettings.jqXHR = $.ajax({"dataType": 'json', "url": sSource, "data": data, "success": fnCallback,"error": function (textStatus, errorThrown) {
+        if(textStatus.status == 400 || textStatus.status == 302 ){
+          window.location.replace("/");
+        }else if(textStatus.status == 500 ){
+          alert('<%= "Table Server Error: #{table_name} Contact Support" %>');
+        }else{
+          window.location.replace("/");
+        };
+      }});
+    }
+  }).on( 'draw.dt', function () {
+    <% if debug %> console.log('Drawing Trigger <%= table_name %>'); <% end %>
+    <%= table_name + '_cookie' %>();
+  }).on( 'processing.dt', function ( e, settings, processing ) {
+    if(processing){
+      $('#<%= "#{table_name}_content" %>').find('.table_refresh i').addClass('fa-spin');
+    }else{
+      $('#<%= "#{table_name}_content" %>').find('.table_refresh i').removeClass('fa-spin');
+    }
+  });
+
+  function <%= table_name + '_cookie' %>(){
+    <% if debug %>  console.log('Save Cookie <%= table_name %>'); <% end %>
+    columns =  $('#<%= "#{table_name}_content" %>').find('input[name="<%= table_name %>[table_column_vis][]"]:checked').map(function(_, el) { return $(el).data('key')}).toArray();
+    view = $('#<%= "#{table_name}_content" %>').find('input[type=radio][name="<%= table_name %>[view_mode]"]:checked').val();
+    sort = <%= table_name %>.fnSettings().aaSorting;
+    table_size = <%= table_name %>.fnSettings()._iDisplayLength;
+    sort = sort.map(function(value,key) {
+      column = <%= table_name %>.api().column(value[0]).dataSrc();
+      return [column,value[1]]
+    })
+
+    var orderedItems = [];
+    $.each(<%= table_name %>.api().colReorder.order(), function(value) {
+      data_key = <%= table_name %>.api().column(value).dataSrc();
+      if (data_key != null && data_key.length > 0 ){orderedItems.push(data_key);}
+    });
+
+    if (Cookies.get('<%= "#{table_name}_table" %>') != null){
+      data = $.parseJSON( Cookies.get('<%= "#{table_name}_table" %>'));
+      data['columns'] = columns;
+      data['view'] = view;
+      data['sort'] = sort;
+      data['table_size'] = table_size;
+      data['ordering'] = orderedItems;
+    }else{
+      data = {'columns' : columns, 'view' : view, 'sort' : sort, 'table_size' : table_size, 'orderedItems' : orderedItems};
+    }
+
+    Cookies.set('<%= "#{table_name}_table" %>', data);
+  }
+
+  function <%= table_name + '_column_vis' %>(sorting){
+    $('#<%= "#{table_name}_content" %>').find('input[name="<%= table_name %>[table_column_vis][]"]').on("change", function(e) {
+      index = <%= table_name %>.api().colReorder.transpose(parseInt($(this).val()),'toCurrent');
+      column = <%= table_name %>.api().column(index);
+      column.visible($(this).is(':checked'));
+      <%= table_name + '_cookie' %>();
+    });
+    if(sorting){
+      $('#<%= "#{table_name}_content" %>').find('.table_visiblity').sortable().on("sortstop", function( event, ui ) {
+        <% if debug %>  console.log('Sort Stop Trigger <%= table_name %>'); <% end %>
+        items = $('#<%= "#{table_name}_content" %>').find('.table_visiblity li input');
+        var orderedItems = [];
+        $.each(items, function(index, value) {
+          index = <%= table_name %>.api().colReorder.transpose(parseInt($(value).val()),'toCurrent');
+          column = <%= table_name %>.api().column(index);
+          if (column != null && column.length > 0 ){orderedItems.push(column.index());}
+        });
+        <%= table_name %>.api().colReorder.order(orderedItems);
+      });
+      $('#<%= "#{table_name}_content" %>').find('.table_visiblity').disableSelection();
+    }
+  }
+  <%= table_name + '_column_vis' %>(true);
+
+  //Datable Select
+  function <%= table_name + '_row_select' %>(select, data){
+    var count = <%= table_name %>.api().rows({ selected: true }).count();
+    if(count > 0){
+       $('#<%= "#{table_name}_content" %>').find('.group_actions').removeClass('hidden');
+    }else {
+       $('#<%= "#{table_name}_content" %>').find('.group_actions').addClass('hidden');
+    }
+    if(select){
+      <% if debug %>
+        console.log('Selected');
+        console.log(data);
+      <% end %>
+    }else{
+      <% if debug %>
+        console.log('Deselected');
+        console.log(data);
+      <% end %>
+    }
+  }
+  <%= table_name %>.api().on('select', function ( e, dt, type, indexes ) {
+    <%= table_name + '_row_select' %>(true, <%= table_name %>.api().rows( indexes ).data());
+  });
+  <%= table_name %>.api().on('deselect', function ( e, dt, type, indexes ) {
+    <%= table_name + '_row_select' %>(false, <%= table_name %>.api().rows( indexes ).data());
+  });
+
+  //Datatable header reorder
+  <%= table_name %>.api().on('column-reorder', function ( e, settings, details ) {
+    <% if debug %> console.log('Ordering Trigger <%= table_name %>'); <% end %>
+    var orderedItems = [];
+    $.each(<%= table_name %>.api().colReorder.order(), function(value) {
+      data_key = <%= table_name %>.api().column(value).dataSrc();
+      item = $('#<%= "#{table_name}_content" %>').find('.table_visiblity li input[data-key="' + data_key + '"]').parents('li');
+      if (item != null && item.length > 0 ){orderedItems.push(item);}
+    });
+    <% if debug %> console.log('Ordering Trigger Rebuild DropDown <%= table_name %>'); <% end %>
+    $('#<%= "#{table_name}_content" %>').find('.table_visiblity').empty().html(orderedItems);
+    <%= table_name + '_column_vis' %>(false);
+    <%= table_name + '_cookie' %>();
+  });
+
+  $('#<%= "#{table_name}_select_all" %>').on('click', function(e){
+    if($(this).is(':checked')){<%= table_name %>.find('input[type="checkbox"].select_row').prop("checked", true);}else{<%= table_name %>.find('input[type="checkbox"].select_row').prop("checked", false);}
+  });
+
+  $('#<%= "#{table_name}_content" %>').find('.table_refresh').click(function(e){<%= table_name %>.api().draw(false)});
+
+  $('#<%= "#{table_name}_content" %>').find('select[name="table_size"]').on("change", function(e) {
+    <%= table_name %>.fnSettings()._iDisplayLength = $(this).val();<%= table_name %>.api().draw(false);
+  });
+
+  $('#<%= "#{table_name}_content" %>').find('input[type=radio][name="<%= table_name %>[view_mode]"]').on("change", function(e) {
+    <%= table_name %>.api().draw(false)
+  });
+
+  var timer;
+  var timeout = 300;
+  $('#<%= "#{table_name}_content" %>').find('input[name="table[search]"]').keydown(function(){
+    clearTimeout(timer);
+    var search = $(this);
+    if (search.val()) {timer = setTimeout(function(){<%= table_name %>.api().draw();}, timeout);}
+  });
+
+  <% if defined?(table_filters)  %>
+    <% table_filters.each do |table_filter| %>
+      <% cache = table_filter["cache"].blank? ? false : table_filter["cache"]  %>
+      <% if table_filter["type"] == "checkbox" %>
+        $('#<%= "#{table_name}_content" %>').find('input[name="<%= table_filter["name"].parameterize('_') %>[]"]').click(function(){
+          filters = $('#<%= "#{table_name}_content" %>').find('input[name="<%= table_filter["name"].parameterize('_') %>[]"]:checked').map(function(_, el) { return $(el).val()}).toArray();
+          <% if cache %>
+            if (Cookies.get('<%= "#{table_name}_table" %>') != null){
+              data = $.parseJSON( Cookies.get('<%= "#{table_name}_table" %>'));
+              data['<%= table_filter["name"].parameterize('_') %>_filter'] = filters
+            }else{
+              data = {'<%= table_filter["name"].parameterize('_') %>_filter' : filters }
+            }
+            Cookies.set('<%= "#{table_name}_table" %>', data);
+          <% end %>
+          return $("#<%= table_name %>").dataTable().api().draw()
+        });
+      <% elsif table_filter["type"] == "select" %>
+        $('#<%= "#{table_name}_content" %>').find('select[name="<%= table_filter["name"].parameterize('_') %>"]').change(function(){
+          filter = $('#<%= "#{table_name}_content" %>').find('select[name="<%= table_filter["name"].parameterize('_') %>"]').val();
+          <% if cache %>
+            if (Cookies.get('<%= "#{table_name}_table" %>') != null){
+              data = $.parseJSON( Cookies.get('<%= "#{table_name}_table" %>'));
+              data['<%= table_filter["name"].parameterize('_') %>_filter'] = filter
+            }else{
+              data = {'<%= table_filter["name"].parameterize('_') %>_filter' : filter }
+            }
+            Cookies.set('<%= "#{table_name}_table" %>', data);
+          <% end %>
+          return $("#<%= table_name %>").dataTable().api().draw()
+        });
+      <% elsif table_filter["type"] == "boolean" %>
+        $('#<%= "#{table_name}_content" %>').find('input[name="<%= table_filter["name"].parameterize('_') %>"]').change(function(){
+          filter = $('#<%= "#{table_name}_content" %>').find('input[name="<%= table_filter["name"].parameterize('_') %>"]:checked').val();
+          <% if cache %>
+            if (Cookies.get('<%= "#{table_name}_table" %>') != null){
+              data = $.parseJSON( Cookies.get('<%= "#{table_name}_table" %>'));
+              data['<%= table_filter["name"].parameterize('_') %>_filter'] = filter
+            }else{
+              data = {'<%= table_filter["name"].parameterize('_') %>_filter' : filter }
+            }
+            Cookies.set('<%= "#{table_name}_table" %>', data);
+          <% end %>
+          return $("#<%= table_name %>").dataTable().api().draw()
+        });
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

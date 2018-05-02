@@ -1,0 +1,252 @@
+.alerts {
+  background: #d3ede5;
+  padding: 8px 0px;
+
+  &.production {
+    background: #D4ECE9;
+  }
+
+  p {
+    padding: 0px 15px;
+    margin: 0px;
+    line-height: 11px;
+    font-size: 11px;
+    color: #384b5d;
+    height: 11px;
+
+    span {
+      font-weight: bold;
+    }
+  }
+}
+
+.settings_block {
+  margin-bottom: 5px;
+  border: 4px solid #f1f1f1;
+  border-radius: 3px;
+  font-size: 10px;
+
+
+  p {
+    margin: 2px 4px 2px 4px;
+    background-color: #FFFFFF;
+    padding: 10px 10px 0px 10px;
+    color: #7f7f7f;
+    height: 57px;
+  }
+  .breadcrumb {
+    box-shadow: none;
+    font-size: 10px;
+    line-height: 8px;
+    margin-bottom: 4px;
+    min-height: 25px;
+
+    > li + li:before {
+      content: "| ";
+      padding: 0 5px;
+      color: #dbdbdb;
+    }
+  }
+}
+
+
+
+
+.grid_view{
+  .chic-let{
+    a:visited {
+        color: #74818e;
+    }
+    a:link {
+        color: #6C96A1;
+    }
+    a {
+        color: #384B5D;
+        text-decoration: none;
+    }
+    a {
+        background-color: transparent;
+    }
+  }
+  @-webkit-keyframes iconHover {
+    0% {
+      opacity: 1; }
+    100% {
+      opacity: 0; } }
+
+      @-webkit-keyframes contentHover {
+    0% {
+      opacity: 0; }
+    100% {
+      opacity: 1; } }
+
+    .chic-let:hover .app-icon {
+      -webkit-animation: iconHover .1s linear forwards;
+      animation: iconHover .1s linear forwards;
+  }
+
+  .chic-let:hover .description {
+      display: inline-block;
+  }
+
+  .chic-let:hover {
+      box-shadow: 0 0 90px 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      z-index: 25;
+  }
+    .chic-let:hover .card-content {
+        width: 100%;
+        margin-left: 0px;
+        padding-right: 20px;
+        -webkit-animation: contentHover .4s linear forwards;
+        animation: contentHover .4s linear forwards;
+    }
+    .chic-let {
+        font-family: "brandon-grotesque", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+        border: 1px solid #ebebeb;
+        border-radius: 5px;
+        padding: 7px 10px 10px 10px;
+        position: relative;
+        width: 32.333333%;
+        height: 115px;
+        margin: 5px;
+        z-index:1;
+        background: #ffffff;
+    }
+    .card {
+        max-height: 325px;
+        margin-top: 15px
+    }
+
+    .zuora-certified {
+        background: #4d4d4d;
+        padding: 5px 10px;
+        border-radius: 5px 0 5px 0;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.1);
+        font-size: 8px;
+        letter-spacing: .1em;
+        display: block;
+        width: 90px;
+        float: left;
+        z-index: 8;
+    }
+
+    .card a:link {
+        color: #4d4d4d;
+    }
+
+
+    .chic-let .partner-logo {
+        position: absolute;
+        max-width: 60px;
+        max-height: 40px;
+        top: 10px;
+        right: 10px;
+    }
+
+    .chic-let .app-icon {
+        height: 99px;
+        width: 99px;
+        border-radius: 5px;
+        margin-right: 10px;
+        position: relative;
+        -webkit-animation: icon .5s linear forwards;
+        animation: icon .5s linear forwards;
+    }
+
+
+    .chic-let .card-content {
+        position: absolute;
+        width: 244px;
+        top: 40px;
+        margin-left: 100px;
+    }
+
+    .chic-let .card-top{
+      margin-bottom: -53px;
+    }
+
+    .buttons{
+      display: none;
+    }
+    .chic-let:hover .buttons{
+      display: block;
+      padding: 5px;
+      width: 33.33%;
+      float: right;
+    }
+
+
+    .chic-let:hover .card-top {
+        -webkit-animation: iconHover .1s linear forwards;
+        animation: iconHover .1s linear forwards;
+    }
+
+    .chic-let .category {
+        font-size: 9px;
+        font-weight: 900;
+        line-height: 7px;
+        margin: 0 0 4px 0;
+        color: #9EB1C0;
+        letter-spacing: .06em;
+    }
+
+    .chic-let .app-title {
+        font-size: 17px;
+        line-height: 18px;
+        margin: -1px 0 0 0;
+        font-weight: 300;
+    }
+    .text-uppercase, .initialism {
+        text-transform: uppercase;
+    }
+
+
+    .chic-let .description {
+        font-size: 11px;
+        line-height: 16px;
+        display: none;
+        color: #9EB1C0;
+        font-weight: 300;
+    }
+
+  #watermark {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0.4;
+    margin-top: -7px;
+    margin-left: -10px;
+    width: 100%;
+    font-weight: 100;
+    color: #6EC5AB;
+  }
+}
+
+.btn.navy {
+    background-color: #384B5D;
+    color: #ffffff;
+}
+
+.btn.navy:hover {
+    background: #2d3c4a;
+}
+
+.icon-container{
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+.text-uppercase, .initialism {
+    text-transform: uppercase;
+}
+
+.info-block .category {
+  margin-top: 10px;
+  color: #A9B4BF;
+}
+

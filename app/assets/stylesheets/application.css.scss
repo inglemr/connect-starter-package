@@ -1,0 +1,111 @@
+$navbar-default-color: #394b5b;
+$navbar-default-bg: #394b5b;
+$navbar-default-link-color: #fff;
+$navbar-default-link-hover-color: #fff;
+$navbar-default-link-hover-bg: transparent;
+$navbar-default-link-active-bg: transparent;
+$navbar-default-link-active-color: #fff;
+$navbar-margin-bottom: 0px;
+$navbar-height: 50px;
+$navbar-border-radius: 0px;
+$navbar-default-toggle-hover-bg: transparent;
+$navbar-default-toggle-icon-bar-bg: #afb7be;
+$navbar-default-toggle-border-color: transparent;
+$navbar-default-toggle-icon-bar-bg: #6ec5ab;
+$navbar-padding-vertical: 15px;
+$navbar-padding-horizontal: 15px;
+
+$brand-primary: #384b5d;  //New
+$brand-success: #6ec5ab;  //show
+$brand-info: #6d95a0;     //Edit/Update
+$brand-warning: #a9b4bf;  //Other
+$brand-danger: #c05f68;  //Deleted
+
+$border-radius-base: 2px;
+$border-radius-large: 5px;
+$line-height-base: 1.4;
+
+$breadcrumb-padding-vertical: 8px;
+$breadcrumb-padding-horizontal: 15px;
+$breadcrumb-bg: #ffffff;
+$breadcrumb-color: #dbdbdb;
+$breadcrumb-active-color: #939598;
+$breadcrumb-separator: "/";
+
+$link-color: #3399cc;
+$link-hover-color: #006699;
+$link-hover-decoration: underline;
+
+$dropdown-link-color: #787878;
+$dropdown-divider-bg: #e6e6e6;
+$dropdown-link-hover-bg: #f2f4f8;
+$dropdown-link-hover-color: #000000;
+$dropdown-link-active-color: #6ec5ab;
+$dropdown-link-active-bg: #f2f4f8;
+$dropdown-bg: #fff;
+$dropdown-border: rgba(0, 0, 0, 0.15);
+$zindex-dropdown: 1000;
+
+
+$font-family-base: Verdana, Arial, "Helvetica", sans-serif;
+$font-size-base: 12px;
+//$line-height-base: 16px;
+$text-color: #000000;
+$body-bg: #FFFFFF;
+
+$modal-backdrop-bg: #fff;
+$modal-content-bg: #fff;
+$modal-header-border-color: transparent;
+$modal-title-padding: 15px 20px;
+$modal-inner-padding: 15px 20px;;
+$modal-footer-border-color: transparent;
+$modal-sm: 400px;
+$modal-md: 600px;
+$modal-lg: 800px;
+$modal-backdrop-bg: rgb(57,75,93) ;
+$modal-backdrop-opacity: .6;
+$modal-content-border-color: 2px solid #e9ebee;
+$modal-content-fallback-border-color: 2px solid #e9ebee;
+
+$btn-border-radius-small: 3px;
+$btn-border-radius-medium: 3px;
+$btn-border-radius-large: 5px;
+
+
+$panel-bg: #FFF;
+$panel-default-heading-bg: #FFF;
+$panel-default-border: #FFF;
+
+
+//************ JQuery UI ************
+@import "jquery-ui";
+
+//************ Bootstrap ************
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "bootstrap-toggle";
+
+@import "css/icons.scss";
+
+@import "css/JSONEditor.scss";
+
+//************ Datatables ************
+@import "dataTables/bootstrap/3/jquery.dataTables.bootstrap";
+@import "dataTables/extras/dataTables.responsive";
+
+//************ Select2 ************
+@import "select2";
+@import "select2-bootstrap";
+
+//************ SummerNote ************
+@import "css/summernote.scss";
+
+//************ cronGen ************
+@import "css/cronGen.scss";
+
+//************ contextMenu ************
+@import "css/jquery.contextMenu.min.scss";
+
+//***** Custom configs *********
+@import "custom.scss";
+@import "zuora/*";

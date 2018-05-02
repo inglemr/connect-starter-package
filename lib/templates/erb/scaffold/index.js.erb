@@ -1,0 +1,2 @@
+$('#content').html('<%%= escape_javascript render(:file=> "#{request.path_parameters[:controller]}/#{request.path_parameters[:action]}", :formats => [:html]) %>');
+history.pushState({}, '', '<%%= request.original_url  %>');

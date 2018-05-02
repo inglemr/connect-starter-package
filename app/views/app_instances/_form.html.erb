@@ -1,0 +1,92 @@
+<% content_for :modal do %>
+  <%= form_for(@appinstance, {:url => url_for(:controller => controller.controller_name, :action => ['update','edit'].include?(controller.action_name) ? 'update' : 'create'), remote: true,  authenticity_token: true, :html => {:multipart => true, :class=>'form-horizontal', :id => 'settings_form'}}) do |f| %>
+
+    <div class="modal-dialog" style="width: 1200px">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 class="modal-title"><%= ['update','edit'].include?(controller.action_name) ? "Update" : "New" %> Settings</h3>
+        </div>
+        <div class="modal-body z-background">
+          <%= hidden_field_tag :skip, false %>
+          <h3>Global Settings</h3>
+          
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="inputEmail3" class="col-sm-2 control-label">Credit Account Id</label>
+              <div class="col-sm-4">
+                <%= f.text_field :credit_account_id, :class => 'form-control'%>
+              </div>
+
+              <label for="inputEmail3" class="col-sm-2 control-label">Debit Account Id</label>
+              <div class="col-sm-4">
+                <%= f.text_field :debit_account_id, :class => 'form-control'%>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="inputEmail3" class="col-sm-2 control-label">Subsidiary Type Id</label>
+              <div class="col-sm-4">
+                <%= f.text_field :subsidiary_type_id, :class => 'form-control'%>
+              </div>
+              <label for="inputEmail3" class="col-sm-2 control-label">Subsidiary Internal Id</label>
+              <div class="col-sm-4">
+                <%= f.text_field :subsidiary_internal_id, :class => 'form-control'%>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="inputEmail3" class="col-sm-2 control-label">Department Type Id</label>
+              <div class="col-sm-4">
+                <%= f.text_field :department_type_id, :class => 'form-control'%>
+              </div>
+              <label for="inputEmail3" class="col-sm-2 control-label">Department Internal Id</label>
+              <div class="col-sm-4">
+                <%= f.text_field :department_internal_id, :class => 'form-control'%>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="inputEmail3" class="col-sm-2 control-label">Class Type Id</label>
+              <div class="col-sm-4">
+                <%= f.text_field :class_type_id, :class => 'form-control'%>
+              </div>
+              <label for="inputEmail3" class="col-sm-2 control-label">Class Internal Id</label>
+              <div class="col-sm-4">
+                <%= f.text_field :class_internal_id, :class => 'form-control'%>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="inputEmail3" class="col-sm-2 control-label">Entity Type Id</label>
+              <div class="col-sm-4">
+                <%= f.text_field :entity_type_id, :class => 'form-control'%>
+              </div>
+            </div>
+          </div>
+
+
+           
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit :class => "btn btn-primary", :value => ['update','edit'].include?(controller.action_name) ? "Update" : "Create" %>
+        </div>
+      </div>
+    </div>
+      
+  <% end %>
+<% end %>
+
+<% content_for :scripts do %>
+  $('#z_hub_modal').modal("show");
+  
+<% end %>

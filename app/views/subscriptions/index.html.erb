@@ -1,0 +1,69 @@
+<% content_for :breadcrumbs do %>
+  <ul class="breadcrumb">
+    <li><%= link_to "Home", subscriptions_path %></li>
+    <li class="active">Subscriptions</li>
+  </ul>
+<% end %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="green-header">
+      <h2>Subscriptions</h2>
+    </div>
+    <ul class="nav tab-header">
+      <li class="active"><a href="#notification_datatable">Subscriptions</a></li>
+    </ul>
+    <div class="tab-content">
+
+      <div class="tab-pane active" id="subscriptions_datatable">
+        <!-- Put the link for run now here -->
+        <% table_filters = Array.new %>
+        <% table_actions = capture do %>
+          <div class="btn-group">
+            <%= link_to  new_subscription_path, :remote => true, :class => 'btn btn-default' do %>
+               <span class="glyphicon glyphicon-plus"></span> &nbsp; New Subscription
+            <% end %>
+          </div>
+        <% end %>
+          <% columns  =[
+            { "title": "Id", "data": "subscriptions__display_id",  "class": "center" },
+            { "title": "Name", "data": "subscriptions__name",  "class": "center" }, 
+            { "title": "Zuora Id", "data": "subscriptions__zuora_id",  "class": "center" },
+            { "title": "Actions", "data": "subscriptions__actions", "class": "center", "bSortable": false }
+          ] %>
+          
+          <%= render_datatable(Subscription, subscriptions_path(format: "json"), :table_actions => table_actions, :sort => [[ "subscriptions__display_id", "desc" ]],
+            columns: columns) %>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="subscriptions_form_modal" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+
+
+
+
+
+<% content_for :scripts do %>
+  $('[data-toggle="tooltip"]').tooltip();
+  
+
+  $(notification_definitions).dataTable();
+  
+  $.contextMenu({
+    selector: '.context-menu-action', 
+    trigger: 'left',
+    callback: function(id, options) {
+      $('a#' + id)[0].click();
+    },
+    build: function($trigger, e) {
+      var items = ($(e.target).data('items') == null) ? $(e.target).parent().first().data('items') : $(e.target).data('items') ;
+      return {
+        items: items
+      };
+    }
+  });
+<% end %>
+
